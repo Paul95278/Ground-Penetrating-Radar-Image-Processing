@@ -38,7 +38,7 @@
  * [Extracting and Identifying Concrete Structural Defects in GPR Images](http://spie.org/Publications/Proceedings/Paper/10.1117/12.2296452)
  * [Study of GPR Signal Propagation and Imaging of Multilayer Rebar
 Mesh Structure](http://spie.org/Publications/Proceedings/Paper/10.1117/12.2296457)
- ##项目分工
+ ## 项目分工
  * `叶奇玲（NUPT）`完成对空洞与脱空病害相关算法的开发
  * `田家乐（NUPT）`完成对钢筋相关算法的开发
- * 刘  普（NUPT）利用Qt+openCV实现并优化上述算法，并封装成可初步使用的软件
+ * `刘  普（NUPT）`利用Qt+openCV实现并优化上述算法，并封装成可初步使用的软件
