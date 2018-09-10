@@ -1,0 +1,63 @@
+struct Result{
+	*Mat RectangleMarkSrcRemoveAve;						//原图去均值后加框
+    *Mat PosPhaseMatrixData;							//相位为+1的病害数据
+    *Mat NegPhaseMatrixData;								////相位为+1的病害数据
+    *Mat PosDiseaseSubMatrixPic_ThreeValued[100];   //相位为+1的三值化后图像
+    *Mat NegDiseaseSubMatrixPic_ThreeValued[100];  //相位为-1的三值化后图像
+	Mat RectangleMarkSrc;          //被方框标记后的 未三值化处理后的 原图 //*弃用
+    Mat RectangleMark;           // 被方框标记后的 三值化处理后的 原图
+    Mat ThreeValuedProcessedSrc;   //三值化处理后的原图
+    Mat coord;                       //存储坐标，用来画框标记，见详细
+    *Mat DiseaseSubMatrixData;		 //存储病害信息，见详细
+    Mat DiseaseSubMatrixPic_ThreeValued[200];  //存储 病害子图（已三值化）的Mat数组[0，disease_num-1]
+    Mat DiseaseSubMatrixPic[200];                //存贮有病害子图（未三值化）的Mat数组[0,disease_num-1]
+    float Threshold;			//行方差阈值
+    int Sub_matrix_num;			//子图数目
+    int disease_num;            //有病害子图数目 
+    int VIP_disease_num;		//重要病害子图数目    
+								注：有病害子图是否重要判断依据 ———（有病害行数/子图总行数）*100?>sift_Threshold
+    int NIP_disease_num; 		//非重要病害子图数目
+    int Sub_matrix_rowlnum;		//子图行数
+    int Sub_matrix_colnum;		//子图列数
+    int sift_Threshold;			//VIP病害筛选阈值，阈值=（有病害行数/子图总行数）*100  ||有病害行：行方差大于Threshol的行
+    int SrcRows;				//原图行数						
+    int SrcCols;                 //原图列数
+};
+
+Mat coord:（大小为 disease_num*5 的矩阵）
+	 例如：
+	              左上角x轴坐标     左上角y轴坐标      右下角x轴坐标   ..y      1:VIP 0：NIP
+					748       			192     			1119      205        	0      //第一个框的左上角坐标（748,192）， \...
+					1122       			 16     			1492      454        	0            ...右下角坐标（1119,205），非重要病害子图，用绿色框
+					1496      			442     			1865      454        	0
+					1870      			195     			2238      202        	0
+					2244      			274     			2611      454        	1
+					2618      			196     			2984      454        	0
+					3740      			192     			4103      454        	1
+					4114      			191    	 			4476      442        	0
+					4862      			184     			5222      454       	1
+					5236       			 43     			5595      454        	1
+					5610      1			 87     			5968      434        	0
+
+*Mat DiseaseSubMatrixData:(大小为 disease_num*10)
+					 3      192      205       14        3       x 		0        0        0			1
+					 4       16      454       40        8       x 		0        0        0			2
+					 5      442      454       13        3       x 		0        0        0			3
+					 6      195      202        8        2       x 		0        0        0			4
+					 7      274      454      125       24       x 		1       56      203			5	
+					 8      196      454        8        2       x 		0        0        0			6
+					11      192      454      203       40       x 		1       56      203			7
+					12      191      442       35        7       x 		0        0        0			8
+					14      184      454      204       40       x 		1       58      206			9
+					15       43      454      132       26       x		-1       56      203		10	
+					16      187      434       31        6       x 		0        0        0			11
+第一列：病害所在子图的标号，第一幅子图标号为1
+第二列：有病害子图最早出现行方差大于Threshold的行序号
+第三列：有病害子图最后出现行方差大于Threshold的行序号
+第四列：所有行方差大于Threshol的行总数
+第五列：（有病害行数/子图总行数）*100
+第六列：病害密度  （有病害行数/(有病害子图最后出现行方差大于Threshold的行序号-有病害子图最早出现行方差大于Threshold的行序号+1)）
+第七列：相位，0：NIP子图不参与相位判断；-1：则病害归为水或钢筋；1：则病害归为空洞或脱空。
+第八列：三值化下阈值。   0：NIP子图不参与三值化；
+第九列：三值化上阈值。   0：NIP子图不参与三值化；
+*第十列：病害序号					
