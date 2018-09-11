@@ -40,5 +40,6 @@
 Mesh Structure](http://spie.org/Publications/Proceedings/Paper/10.1117/12.2296457)
  ## 项目分工
  * `叶奇玲（NUPT）`完成对空洞与脱空病害相关算法的开发
- * `田家乐（NUPT）`完成对钢筋相关算法的开发
+ * `田家乐（NUPT）`完成对钢筋相关算法的开发<br>
+   * ``上述大部分研发工作由叶奇玲、田家乐完成``
  * `刘  普（NUPT）`利用Qt+openCV实现并优化上述算法，并封装成可初步使用的软件
